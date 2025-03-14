@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:newsclustering/controllers/news_controller.dart';
 import 'package:newsclustering/controllers/news_history_controller.dart';
 
@@ -14,7 +15,7 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
   Get.lazyPut(()=>NewsController());
   Get.lazyPut(()=> NewsHistoryController());
-  Get.lazyPut(()=> NewsHistoryController());
+  await GetStorage.init(); // Initialize GetStorage
 
   runApp(const MyApp());
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

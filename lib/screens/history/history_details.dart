@@ -41,7 +41,7 @@ class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Obx(() => newsController.getNews().isEmpty
+              Obx(() => newsHistoryController.getNewsHistory().isEmpty
                   ? Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

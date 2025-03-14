@@ -1,26 +1,46 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'dart:convert';
 
 class NewsHistoryController extends GetxController {
-  var newsHistory = <Map<String, dynamic>>[].obs; // List of news JSON objects
+  var newsHistory = <Map<String, dynamic>>[].obs;
+  final storage = GetStorage();
+  final String storageKey = "newsHistory";
 
-  // Add news to history
-  void addNewsToHistory(Map<String, dynamic> newsData) {
-    newsHistory.add(newsData); // Append new entry to history
+  @override
+  void onInit() {
+    super.onInit();
+    loadNewsHistory();
   }
 
-  // Get the stored news history
+  // Load news history from storage
+  void loadNewsHistory() {
+    String? storedData = storage.read(storageKey);
+    if (storedData != null) {
+      List<dynamic> jsonData = jsonDecode(storedData);
+      newsHistory.value = jsonData.cast<Map<String, dynamic>>();
+    }
+  }
+
+  // Add news to history and store in shared preferences
+  void addNewsToHistory(Map<String, dynamic> newsData) {
+    newsHistory.add(newsData);
+    _saveToStorage();
+  }
+
+  // Get stored news history
   List<Map<String, dynamic>> getNewsHistory() {
     return newsHistory;
   }
 
-  // Clear the news history
+  // Clear news history
   void clearNewsHistory() {
     newsHistory.clear();
+    storage.remove(storageKey);
   }
 
-  // @override
-  // void onClose() {
-  //   clearNewsHistory(); // ✅ Clears history when the controller is disposed
-  //   super.onClose();
-  // }
+  // Save to shared preferences
+  void _saveToStorage() {
+    storage.write(storageKey, jsonEncode(newsHistory));
+  }
 }
