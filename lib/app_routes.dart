@@ -12,25 +12,25 @@ class AppRoutes {
       name: '/splash',
       page: () => SplashScreen(),
       transition: Transition.circularReveal,
-      transitionDuration: const Duration(milliseconds: 900),
+      transitionDuration: const Duration(milliseconds: 400),
     ),
     GetPage(
       name: '/',
       page: () => HomeScreen(),
       transition: Transition.circularReveal,
-      transitionDuration: const Duration(milliseconds: 900),
+      transitionDuration: const Duration(milliseconds: 400),
     ),
     GetPage(
       name: '/history',
       page: () => HistoryScreen(),
       transition: Transition.circularReveal,
-      transitionDuration: const Duration(milliseconds: 900),
+      transitionDuration: const Duration(milliseconds: 400),
     ),
     GetPage(
       name: '/history_details',
       page: () => HistoryDetailsScreen(),
       transition: Transition.circularReveal,
-      transitionDuration: const Duration(milliseconds: 900),
+      transitionDuration: const Duration(milliseconds: 400),
     ),
   ];
 }

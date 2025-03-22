@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:newsclustering/controllers/news_controller.dart';
+import 'package:newsclustering/screens/home/widgets/BuildResultsWidget.dart';
 import 'package:newsclustering/services/api_services.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -70,8 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() => isLoading = true);
                   await newsApi.fetchNews(urlController.text);
                   setState(() => isLoading = false);
+                  urlController.clear();
                 },
-                child: const Text('Classify News'),
+                child: const Text('Cluster News'),
               ),
             ),
             const SizedBox(height: 16),
@@ -101,62 +103,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               )
-                  : _buildResults(),
+                  : const BuildResultsWidget()
             ),
+            // Add a graph that would show the data where the x axis will be number of cluster and y axis will be the score.
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildResults() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 8),
-        ListTile(
-          leading: const Icon(Icons.analytics_outlined),
-          title: Obx(() => Text(newsController.newsResult['category'] ?? 'No Category')),
-        ),
-        const Text('Summary', style: TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
-        Obx(() => Text(newsController.newsResult['summary'] ?? 'No Summary')),
-        const SizedBox(height: 16),
-        const Text('Clustering Metrics', style: TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
-        _buildMetricSection('K-Means'),
-        _buildMetricSection('AGNES'),
-        _buildMetricSection('Spectral Clustering'),
-        _buildMetricSection('GMM Clustering'),
-        const SizedBox(height: 50),
-        Center(
-          child: ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.bar_chart),
-            label: const Text('View Performance Graph'),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMetricSection(String algorithm) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(algorithm, style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
-        Obx(() => Text(
-          'Silhouette Score: ${newsController.newsResult['clustering_metrics']?[algorithm]?['Silhouette Score']?.toString() ?? 'NULL'}',
-        )),
-        Obx(() => Text(
-          'DB Index: ${newsController.newsResult['clustering_metrics']?[algorithm]?['DB Index']?.toString() ?? 'NULL'}',
-        )),
-        Obx(() => Text(
-          'CH Index: ${newsController.newsResult['clustering_metrics']?[algorithm]?['CH Index']?.toString() ?? 'NULL'}',
-        )),
-        const SizedBox(height: 16),
-      ],
     );
   }
 }
