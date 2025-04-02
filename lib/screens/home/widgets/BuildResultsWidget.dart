@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newsclustering/screens/home/widgets/BuildGraphSectionWidget.dart';
 
 import '../../../controllers/news_controller.dart';
 import 'BuildMetricsSectionWidget.dart';
@@ -37,12 +38,57 @@ class _BuildResultsWidgetState extends State<BuildResultsWidget> {
         BuildMetricsSectionWidget(algorithm: 'GMM Clustering'),
         const SizedBox(height: 50),
         Center(
-          child: ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.bar_chart),
-            label: const Text('View Performance Graph'),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Theme.of(context).primaryColor,),
+
+            child: Center(
+              child: Text("Performance Graph", style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Theme.of(context).secondaryHeaderColor),)
+            ),
           ),
         ),
+        SizedBox(height: 20,),
+        BuildGraphSectionWidget(),
+        SizedBox(height: 20,),
+        buildLegend(),
+        SizedBox(height: 50,),
+      ],
+    );
+  }
+
+  /// Legend Widget
+  Widget buildLegend() {
+    List<Color> colors = [Colors.blue, Colors.red, Colors.yellow];
+    List<String> metrics = ["Silhouette Score", "DB Index", "CH Index"];
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(metrics.length, (index) {
+            return Row(
+              children: [
+                Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: colors[index],
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  metrics[index],
+                  style: const TextStyle(fontSize: 12),
+                ),
+                const SizedBox(width: 10),
+              ],
+            );
+          }),
+        ),
+        SizedBox(height: 10,),
+        Text("No. of clusters is: 24")
       ],
     );
   }

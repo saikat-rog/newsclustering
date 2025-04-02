@@ -1,0 +1,2 @@
+C:/Users/saikat/Desktop/newsclustering/android/app/.cxx/RelWithDebInfo/206n382g/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/saikat/Desktop/newsclustering/android/app/.cxx/RelWithDebInfo/206n382g/arm64-v8a/CMakeFiles/rebuild_cache.dir
