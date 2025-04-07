@@ -16,7 +16,7 @@ class BuildGraphSectionWidget extends StatelessWidget {
         height: 300,
         child: BarChart(
           BarChartData(
-            maxY: 5,
+            maxY: 10,
             barGroups: _generateBarGroups(),
             titlesData: FlTitlesData(
               topTitles: AxisTitles( // Disable top titles

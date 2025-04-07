@@ -30,6 +30,41 @@ class _BuildResultsWidgetState extends State<BuildResultsWidget> {
         const SizedBox(height: 8),
         Obx(() => Text(newsController.newsResult['summary'] ?? 'No Summary')),
         const SizedBox(height: 16),
+        Obx(() {
+          String sentiment = newsController.newsResult['sentiment'] ?? 'No Sentiment';
+          Color color;
+
+          switch (sentiment.toUpperCase()) {
+            case 'SENTIMENT: NEGATIVE':
+              color = Colors.red;
+              break;
+            case 'SENTIMENT: POSITIVE':
+              color = Colors.green;
+              break;
+            case 'SENTIMENT: NEUTRAL':
+              color = Colors.yellow;
+              break;
+            default:
+              color = Colors.grey;
+          }
+
+          return Row(
+            children: [
+              Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(sentiment),
+            ],
+          );
+        }),
+
+        const SizedBox(height: 16),
         const Text('Clustering Metrics', style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         BuildMetricsSectionWidget(algorithm: 'K-Means'),
