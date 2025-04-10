@@ -27,4 +27,21 @@ class NewsApi {
       }
     }
   }
+
+  Future <Map<String, dynamic>> sendReview(Map<String, dynamic> feedbackData) async {
+    Dio dio = Dio();
+    try {
+      Response response = await dio.post(
+        '${dotenv.env["API_URI"]}/feedback/feedback_training',
+        data: feedbackData,
+      );
+      return response.data;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return {"error": e.toString()};
+    }
+  }
+
 }

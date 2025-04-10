@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:newsclustering/screens/home/widgets/BuildGraphSectionWidget.dart';
+import 'package:newsclustering/services/api_services.dart';
 
 import '../../../controllers/news_controller.dart';
 import 'BuildMetricsSectionWidget.dart';
@@ -15,6 +17,7 @@ class BuildResultsWidget extends StatefulWidget{
 class _BuildResultsWidgetState extends State<BuildResultsWidget> {
 
   final newsController = Get.find<NewsController>();
+  final newsApi = NewsApi();
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,82 @@ class _BuildResultsWidgetState extends State<BuildResultsWidget> {
         const Text('Summary', style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Obx(() => Text(newsController.newsResult['summary'] ?? 'No Summary')),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () async {
+            bool? allLiked = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text("Did you like all the clustering results?"),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    child: Text("Yes, All"),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: Text("No"),
+                  ),
+                ],
+              ),
+            );
+
+            if (allLiked == true) {
+              final res = await newsApi.sendReview({
+                "all": true,
+                "preferred": ""
+              });
+              Fluttertoast.showToast(
+                msg: res["message"] ?? "Feedback submitted!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.black87,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            } else if (allLiked == false) {
+              String? preferred = await showDialog<String>(
+                context: context,
+                builder: (context) => SimpleDialog(
+                  title: Text("Which one did you prefer?"),
+                  children: [
+                    SimpleDialogOption(
+                      onPressed: () => Navigator.pop(context, 'K-Means'),
+                      child: Text('K-Means'),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () => Navigator.pop(context, 'AGNES'),
+                      child: Text('AGNES'),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () => Navigator.pop(context, 'Spectral Clustering'),
+                      child: Text('Spectral Clustering'),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () => Navigator.pop(context, 'GMM Clustering'),
+                      child: Text('GMM Clustering'),
+                    ),
+                  ],
+                ),
+              );
+
+              final res = await newsApi.sendReview({
+                "all": false,
+                "preferred": preferred
+              });
+              Fluttertoast.showToast(
+                msg: res["message"] ?? "Feedback submitted!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.black87,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            }
+          },
+          child: Text("Review the Result"),
+        ),
+
         const SizedBox(height: 16),
         Obx(() {
           String sentiment = newsController.newsResult['sentiment'] ?? 'No Sentiment';
