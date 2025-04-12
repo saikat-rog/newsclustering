@@ -10,11 +10,13 @@ import 'package:newsclustering/controllers/news_history_controller.dart';
 
 import 'app_routes.dart';
 import 'app_theme.dart';
+import 'controllers/trending_news_controller.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
-  Get.lazyPut(()=>NewsController());
-  Get.lazyPut(()=> NewsHistoryController());
+  Get.put(()=>NewsController());
+  Get.put(()=> NewsHistoryController());
+  Get.put(()=> TrendingNewsController());
   await GetStorage.init(); // Initialize GetStorage
 
   runApp(const MyApp());

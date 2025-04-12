@@ -12,7 +12,7 @@ class BuildMetricsSectionWidget extends StatefulWidget {
 }
 
 class _BuildMetricsSectionWidgetState extends State<BuildMetricsSectionWidget> {
-  final newsController = Get.find<NewsController>();
+  final newsController = Get.put(NewsController());
 
   @override
   Widget build(BuildContext context) {

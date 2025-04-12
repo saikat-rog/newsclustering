@@ -12,8 +12,8 @@ class HistoryDetailsScreen extends StatefulWidget {
 }
 
 class _HistoryDetailsScreenState extends State<HistoryDetailsScreen> {
-  final newsController = Get.find<NewsController>();
-  final newsHistoryController = Get.find<NewsHistoryController>();
+  final newsController = Get.put(NewsController());
+  final newsHistoryController = Get.put(NewsHistoryController());
 
   int index = 0; // Provide a default value
 

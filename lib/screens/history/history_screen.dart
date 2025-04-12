@@ -5,7 +5,7 @@ import '../../controllers/news_history_controller.dart';
 class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final newsHistoryController = Get.find<NewsHistoryController>();
+    final newsHistoryController = Get.put(NewsHistoryController());
 
     return Scaffold(
       appBar: AppBar(

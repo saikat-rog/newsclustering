@@ -53,8 +53,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 'NewsCluster helps you analyze news articles by generating summaries, identifying categories, and evaluating clustering performance. Simply enter a news URL to get started.',
                 style: TextStyle(fontSize: 16),
               ),
-            const SizedBox(height: 16),
-            const Text('Enter News URL', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Enter News URL', style: TextStyle(fontWeight: FontWeight.bold)),
+                TextButton.icon(
+                  onPressed: () {
+                    Get.toNamed('/trending_news');
+                  },
+                  icon: const Icon(Icons.trending_up, color: Colors.white),
+                  label: Text("Trending", style: TextStyle(color: Colors.white)),
+                  style: TextButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  ),
+                )
+
+              ],
+            ),
             const SizedBox(height: 8),
             TextField(
               controller: urlController,
@@ -69,9 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () async {
-                  setState(() => isLoading = true);
+                  newsController.setLoading(true);
                   await newsApi.fetchNews(urlController.text);
-                  setState(() => isLoading = false);
+                  newsController.setLoading(false);
                   urlController.clear();
                 },
                 child: const Text('Cluster News'),
@@ -88,8 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
+            
+            
             Obx(
-                  () => isLoading
+                  () => newsController.loading.value
                   ? Center(
                 child: CircularProgressIndicator(color: Theme.of(context).primaryColor),
               )

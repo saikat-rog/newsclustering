@@ -5,12 +5,12 @@ import 'package:get/get.dart' hide Response;
 import 'package:newsclustering/controllers/news_controller.dart';
 
 import '../controllers/news_history_controller.dart';
+import '../controllers/trending_news_controller.dart';
 
 class NewsApi {
-  //Returns a token for client's id from database based on phone number
   Future<void> fetchNews(String url) async {
-    final newsController = Get.find<NewsController>();
-    final newsHistoryController = Get.find<NewsHistoryController>();
+    final newsController = Get.put(NewsController());
+    final newsHistoryController = Get.put(NewsHistoryController());
     Dio dio = Dio();
     var newsUrl = {'url': url};
 
@@ -44,4 +44,26 @@ class NewsApi {
     }
   }
 
+  Future <void> fetchTrendingNews(String countryData) async {
+    final trendingNewsController = Get.put(TrendingNewsController());
+    Dio dio = Dio();
+
+    try {
+      Response response = await dio.post(
+        '${dotenv.env["API_URI"]}/news/getnewsbycountry',
+        data: {
+          "country": countryData
+        },
+      );
+      trendingNewsController.setTrendingNews(response.data);
+      if (kDebugMode) {
+        print(response.data);
+      }
+      return response.data;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
 }

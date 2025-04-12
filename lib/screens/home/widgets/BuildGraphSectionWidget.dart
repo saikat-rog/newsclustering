@@ -6,7 +6,7 @@ import 'package:newsclustering/controllers/news_controller.dart';
 class BuildGraphSectionWidget extends StatelessWidget {
   BuildGraphSectionWidget({super.key});
 
-  final newsController = Get.find<NewsController>();
+  final newsController = Get.put(NewsController());
 
   @override
   Widget build(BuildContext context) {
