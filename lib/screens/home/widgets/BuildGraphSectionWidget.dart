@@ -37,8 +37,24 @@ class BuildGraphSectionWidget extends StatelessWidget {
                   },
                 ),
               ),
-              bottomTitles: AxisTitles( // Disable right side titles
-                sideTitles: SideTitles(showTitles: false),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (value, meta) {
+                    List<String> algorithms = ["KMM", "AGNES", "SC", "GMM"];
+
+                    if (value.toInt() >= 0 && value.toInt() < algorithms.length) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top:8.0),
+                        child: Text(
+                          algorithms[value.toInt()],
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                  reservedSize: 25,
+                ),
               ),
             ),
             borderData: FlBorderData(
